@@ -13,6 +13,8 @@ struct Boximage:Identifiable{
 struct homePage: View {
     @State private var search: String = ""
     @State private var showFind = false
+    @State private var showdoithongtin = false
+
     let  boxes = [
         Boximage(id:0,title:"Hà Nội",imageText: "0"),
         Boximage(id:1,title:"Nha Trang",imageText: "1"),
@@ -87,67 +89,88 @@ struct homePage: View {
                     .font(.title)
                     .padding(.horizontal)
                 
-                Spacer()
-            }
-            .background(
-                Image("background")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill )
-            )
-            .tabItem {
-                Image(systemName: "house")
-                Text("Trang chủ")
-            }
-            
-            Contact()
-                .tabItem {
-                    Image(systemName: "phone")
-                    Text("Liên hệ")
-                }
-          
-            UserIf()
-                            .tabItem {
-                    Image(systemName: "person")
-                    Text("Tài khoản")
-                }
-           
-        }
-        
-    }
-}
+                Button(action: {
+                    showdoithongtin = true
+                    let window = UIApplication
+                                            .shared
+                                            .connectedScenes
+                                            .flatMap{($0 as? UIWindowScene)?.windows ?? [] }
+                                            .first { $0.isKeyWindow}
+                                        
+                                        window?.rootViewController = UIHostingController(rootView: UserInformation())
+                                        window?.makeKeyAndVisible()
+                                    }
+                                    ) {
+                                        Text("Doi mat khau")
+                                            .foregroundColor(.white)
+                                            .padding()
+                                            .background(Color.green)
+                                            .cornerRadius(10)
+                                    }
+                                    
+                                  
+                                }
+                                .background(
+                                    Image("background")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill )
+                                )
+                                
+                               
+                                .tabItem {
+                                    Image(systemName: "house")
+                                    Text("Trang chủ")
+                                }
+                                
+                                Contact()
+                                    .tabItem {
+                                        Image(systemName: "phone")
+                                        Text("Liên hệ")
+                                    }
+                              
+                                UserIf()
+                                                .tabItem {
+                                        Image(systemName: "person")
+                                        Text("Tài khoản")
+                                    }
+                               
+                            }
+                            
+                        }
+                    }
 
-struct homePage_Previews: PreviewProvider {
-    static var previews: some View {
-        homePage()
-    }
-}
+                    struct homePage_Previews: PreviewProvider {
+                        static var previews: some View {
+                            homePage()
+                        }
+                    }
 
 
-struct boxview: View{
-    let boximagen : Boximage
-    var body:some View{
-        ZStack(alignment: .topLeading){
-            Image(boximagen.imageText)
-                .resizable()
-                .frame(width: 170,height: 220)
-                .cornerRadius(20)
-                .opacity(0.9)
-                .aspectRatio(contentMode: .fit)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.white,lineWidth: 10)
-                )
-            Text(boximagen.title)
-            
-                .foregroundColor(.black)
-                .padding(15)
-                .font(.system(size: 25))
-                .fontWeight(.semibold)
-                .background(Color.white)
-                .cornerRadius(20)
-            
-            
-        }
-        .padding(10)
-    }
-}
+                    struct boxview: View{
+                        let boximagen : Boximage
+                        var body:some View{
+                            ZStack(alignment: .topLeading){
+                                Image(boximagen.imageText)
+                                    .resizable()
+                                    .frame(width: 170,height: 220)
+                                    .cornerRadius(20)
+                                    .opacity(0.9)
+                                    .aspectRatio(contentMode: .fit)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(Color.white,lineWidth: 10)
+                                    )
+                                Text(boximagen.title)
+                                
+                                    .foregroundColor(.black)
+                                    .padding(15)
+                                    .font(.system(size: 25))
+                                    .fontWeight(.semibold)
+                                    .background(Color.white)
+                                    .cornerRadius(20)
+                                
+                                
+                            }
+                            .padding(10)
+                        }
+                    }

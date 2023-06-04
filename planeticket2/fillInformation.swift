@@ -31,7 +31,7 @@ struct ContactInfoView: View {
 
     var body: some View {
         VStack {
-         	
+             
             Text("Thông tin liên hệ")
                 .font(.title)
             if let user = user {
@@ -103,93 +103,103 @@ struct PassengerInfoView: View {
     @State private var gioitinh = ""
     @State private var hovatendem = ""
     @State private var ten = ""
-
     @State private var quoctich = ""
     @State private var selectedDate1 = Date()
-    
-    
-    var body: some View {
+        
+        
+        var body: some View {
+           
+                VStack {
+                    Text("Thông tin hành khách")
+                        .font(.title)
+                    
+                    Picker("Danh xưng", selection: $gioitinh) {
+                        Text("Ông").tag("1")
+                        Text("Bà").tag("2")
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    
+                    TextField("Họ và tên đệm", text: $hovatendem)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    TextField("tên", text: $ten)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    Form {
+                        Section {
+                            DatePicker("Ngày sinh", selection: $selectedDate1, displayedComponents: [.date])
+                                .datePickerStyle(.compact)
+                        }
+                        
+                        Button(action: {
+                            // Xử lý khi bấm nút
+                            print("Ngày sinh đã chọn: \(selectedDate1)")
+                        }) {
+                            Text("Lưu")
+                        }
+                    }
+        
+                    TextField("Quốc tịch", text: $quoctich)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                        
+                }
+            
+            Button(action: {
+                // Xử lý khi bấm nút
+                save()
+            }) {
+                Text("Lưu")
+            }
+            
+        }
+        func save(){
+            let db = Firestore.firestore()
+            guard let currentUser = Auth.auth().currentUser else{
+                return
+            }
+            let thongtinKH: [String: Any] = [
+                "danhxung": gioitinh,
+                "hovatendem": hovatendem,
+                "ten":ten,
+                "ngaysinh":selectedDate1,
+                "quoctich":quoctich
+                
+            ]
+            let userInfo: [String: Any] = [
+                "email": currentUser.email ?? "",
+                "password": ""
+            ]
+            let batch = db.batch()
+                let userRef = db.collection("user").document(currentUser.uid)
+                batch.setData(thongtinKH, forDocument: userRef, merge: true)
+                batch.setData(userInfo, forDocument: userRef, merge: true)
+                
+            batch.commit { error in
+                if let error = error {
+                    print("Error saving user data: \(error.localizedDescription)")
+                } else {
+                    print("Data saved successfully")
+                }
+            }
+            
+            let window = UIApplication
+                .shared
+                .connectedScenes
+                .flatMap{($0 as? UIWindowScene)?.windows ?? [] }
+                .first { $0.isKeyWindow}
+            
+            window?.rootViewController = UIHostingController(rootView: UserInformation())
+            window?.makeKeyAndVisible()
+        }
+        
+        
        
-            VStack {
-                Text("Thông tin hành khách")
-                    .font(.title)
-                
-                Picker("Danh xưng", selection: $gioitinh) {
-                    Text("Ông").tag("1")
-                    Text("Bà").tag("2")
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                
-                TextField("Họ và tên đệm", text: $hovatendem)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                TextField("tên", text: $ten)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                Form {
-                    Section {
-                        DatePicker("Ngày sinh", selection: $selectedDate1, displayedComponents: [.date])
-                            .datePickerStyle(.compact)
-                    }
-                    
-                    Button(action: {
-                        // Xử lý khi bấm nút
-                        print("Ngày sinh đã chọn: \(selectedDate1)")
-                    }) {
-                        Text("Lưu")
-                    }
-                }
-    
-                TextField("Quốc tịch", text: $quoctich)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                    
-            }
-        
-        Button(action: {
-            // Xử lý khi bấm nút
-            save()
-        }) {
-            Text("Lưu")
-        }
-        
     }
-    func save(){
-        let db = Firestore.firestore()
-        guard let currentUser = Auth.auth().currentUser else{
-            return
-        }
-        let thongtinKH: [String: Any] = [
-            "danhxung": gioitinh,
-            "hovatendem": hovatendem,
-            "ten":ten,
-            "ngaysinh":selectedDate1,
-            "quoctich":quoctich
-            
-        ]
-        let userInfo: [String: Any] = [
-            "email": currentUser.email ?? "",
-            "password": ""
-        ]
-        let batch = db.batch()
-            let userRef = db.collection("user").document(currentUser.uid)
-            batch.setData(thongtinKH, forDocument: userRef, merge: true)
-            batch.setData(userInfo, forDocument: userRef, merge: true)
-            
-        batch.commit { error in
-            if let error = error {
-                print("Error saving user data: \(error.localizedDescription)")
-            } else {
-                print("Data saved successfully")
-            }
-        }
-    }
-   
-}
-struct fillInformation: View {
-    
-   
-    var body: some View {
-        NavigationView {
-            VStack {
+    struct fillInformation: View {
+        
+       
+        var body: some View {
+            NavigationView {
+                VStack {
                 ContactInfoView()
             }
             .navigationTitle("Đặt vé máy bay")

@@ -11,20 +11,20 @@ import FirebaseFirestore
 import Firebase
 struct Payment: View {
     @State private var phoneNumber = "9999999"
-        @State private var amount = "999"
+    @State private var amount = "999"
     @State private var iduser = 1
-        @State private var vemaybays :[vemaybay] = []
-        @State private var vemaybayuser : vemaybay?
+    @State private var vemaybays :[vemaybay] = []
+    @State private var vemaybayuser : vemaybay?
     @State private var tendiadiemdi = "chua co"
     @State private var tendiadiemden = "chua co"
     let db = Firestore.firestore()
-     var body: some View {
-         
-            
+    var body: some View {
+        
+        
         
         let calender = Calendar.current
         let currentDate = Date()
-    
+        
         
         
         
@@ -41,10 +41,10 @@ struct Payment: View {
                         .cornerRadius(10)
                     Spacer()
                 }.cornerRadius(10)
-                   
+                
                 VStack(alignment: .leading){
-                   
-
+                    
+                    
                     Text("Ten nguoi mua :\(vemaybayuser?.idUser ?? 1)")
                     Text("So ve:\(vemaybays.count)")
                     Text("So tien")
@@ -74,11 +74,11 @@ struct Payment: View {
                         .font(.system(size: 23))
                     Text("Gio :")
                         .foregroundColor(Color.gray)
-
+                    
                     Spacer().frame(width:150,height: 5)
                 }.background(Color.white)
-                    
-                    
+                
+                
                     .cornerRadius(5)
                     .shadow(radius: 5)
                 
@@ -93,8 +93,8 @@ struct Payment: View {
                         .foregroundColor(Color.gray)
                     Spacer().frame(width:150,height: 5)
                 }.background(Color.white)
-                    
-                    
+                
+                
                     .cornerRadius(5)
                     .shadow(radius: 5)
             }
@@ -164,28 +164,25 @@ struct Payment: View {
                             .cornerRadius(10)
                         Spacer()
                     }
-                    
-                    
-                    
                 }
                 Spacer().frame(width: 20)
             }
             Spacer()
-                            Button(action: {
-                                kiemtraThanhtoan()
-                            }) {
-                                Text("Thanh toán")
-                                    .foregroundColor(.white)
-                            }
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(10)
+            Button(action: {
+                kiemtraThanhtoan()
+            }) {
+                Text("Thanh toán")
+                    .foregroundColor(.white)
+            }
+            .padding()
+            .background(Color.blue)
+            .cornerRadius(10)
             Spacer()
-           
-                
+            
+            
             
         }
-       
+        
         
         
         
@@ -248,30 +245,30 @@ struct Payment: View {
         }
         
     }
-     func searchaddTicket(){
-         self.vemaybayuser = vemaybays.first(where: {$0.idUser == 1})
-
+    func searchaddTicket(){
+        self.vemaybayuser = vemaybays.first(where: {$0.idUser == 1})
+        
     }
-     func fetchVemaybay(){
+    func fetchVemaybay(){
         let vemaybayCollection = db.collection("vemaybay")
-    
+        
         vemaybayCollection.getDocuments{snapshot,error in if let error = error{
             print("Error fetching documents: \(error)")
-                            return
-            }
+            return
+        }
             guard let documents = snapshot?.documents else {
-                            print("No documents found")
-                            return
-                        }
+                print("No documents found")
+                return
+            }
             
-           
+            
             for document in documents{
-                 let  data = document.data()
-                   
+                let  data = document.data()
+                
                 if let giave = data["giave"] as? Float,
-                 
+                   
                     let iddiadiemdi = data["iddiemdi"] as? Int,
-                    let iddiadiemden = data["iddiemden"] as? Int,
+                   let iddiadiemden = data["iddiemden"] as? Int,
                    let idvemaybay = data["idvemaybay"] as? Int,
                    let ngaydifb = data["ngaydi"] as? Timestamp,
                    let ngayinfb = data["ngayin"] as? Timestamp,
@@ -280,34 +277,34 @@ struct Payment: View {
                 {
                     print("da nhan")
                     let ngaydi = convertTimestampToCalendar(ngaydifb)
-                        let ngayin = convertTimestampToCalendar(ngayinfb)
-                        let thoigiandukienden = convertTimestampToCalendar(thoigiandukiendenfb)
-                        
+                    let ngayin = convertTimestampToCalendar(ngayinfb)
+                    let thoigiandukienden = convertTimestampToCalendar(thoigiandukiendenfb)
+                    
                     let vemaybayse = vemaybay(id: document.documentID, giave: giave, iddiadiemdi:iddiadiemdi, iddiadiemden: iddiadiemden, idUser: iduser, idvemaybay: idvemaybay, ngaydi: ngaydi, ngayin: ngayin, thoigianden: thoigiandukienden)
                     self.vemaybays.append(vemaybayse)
                     print(document.data().count)
                     if vemaybayse.idUser == 1 {
-                         self.vemaybayuser = vemaybayse
+                        self.vemaybayuser = vemaybayse
                         print("id:\(self.vemaybayuser?.idUser)")
                     }
                 }
                 else{
                     print("flase")
                 }
-
-                   
-
+                
+                
+                
             }
             
         }
-         
-         
         
-
+        
+        
+        
     }
     
     func searchticketuser(vemaybayraw: [vemaybay] )-> vemaybay{
-       
+        
         
         if let vemaybayse = vemaybayraw.first(where: {$0.idUser == self.iduser}){
             return vemaybayse
@@ -329,108 +326,105 @@ struct Payment: View {
         
         return calendarComponents.calendar ?? Calendar.current
     }
-
     func  getdiadiem(id : Int,choice : Int){
-        let listdiadiem = Firestore.firestore().collection("diadiem")
-        listdiadiem.whereField("iddiadiem", isEqualTo: id).getDocuments{ snapshot, error in
-            if let error = error {
-                print("Error fetching book: \(error.localizedDescription)")
-                return
-            }
-            guard let documents = snapshot?.documents else { return }
-            let diadiem = documents.compactMap{document -> diaDiem? in
-                let data = document.data()
-                let id  = data["iddiadiem"] as? Int
-                let tendaidiemdi = data["tendiadiem"] as? String ?? ""
-                return diaDiem(tendiadiem: tendaidiemdi, iddiadiem: id ?? 1)
-                
-            }
-            if  choice == 1{
-                self.tendiadiemdi = diadiem.first?.tendiadiem ?? "chua co ten"
+            let listdiadiem = Firestore.firestore().collection("diadiem")
+            listdiadiem.whereField("iddiadiem", isEqualTo: id).getDocuments{ snapshot, error in
+                if let error = error {
+                    print("Error fetching book: \(error.localizedDescription)")
+                    return
+                }
+                guard let documents = snapshot?.documents else { return }
+                let diadiem = documents.compactMap{document -> diaDiem? in
+                    let data = document.data()
+                    let id  = data["iddiadiem"] as? Int
+                    let tendaidiemdi = data["tendiadiem"] as? String ?? ""
+                    return diaDiem(tendiadiem: tendaidiemdi, iddiadiem: id ?? 1)
+                    
+                }
+                if  choice == 1{
+                    self.tendiadiemdi = diadiem.first?.tendiadiem ?? "chua co ten"
 
-            }
-            else{
-                self.tendiadiemden = diadiem.first?.tendiadiem ?? "chua co ten"
+                }
+                else{
+                    self.tendiadiemden = diadiem.first?.tendiadiem ?? "chua co ten"
 
-            }
-        }
-    }
-    
-  
-    func kiemtraThanhtoan(){
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.getNotificationSettings{ settings in switch settings.authorizationStatus{
-        case .authorized:
-            self.dispatchoNotification()
-        case .denied:
-            return
-        case .notDetermined:
-            notificationCenter.requestAuthorization(options: [.alert,.sound] ){didAllow, error in if didAllow{
-                    self.dispatchoNotification()
                 }
             }
-        default:
-            return
+        }
+        
+      
+        func kiemtraThanhtoan(){
+            let notificationCenter = UNUserNotificationCenter.current()
+            notificationCenter.getNotificationSettings{ settings in switch settings.authorizationStatus{
+            case .authorized:
+                self.dispatchoNotification()
+            case .denied:
+                return
+            case .notDetermined:
+                notificationCenter.requestAuthorization(options: [.alert,.sound] ){didAllow, error in if didAllow{
+                        self.dispatchoNotification()
+                    }
+                }
+            default:
+                return
+                }
             }
         }
-    }
-//    func fetchUser(id : Int){
-//        let usercollection = Firestore.firestore().collection("user")
-//        usercollection.whereField("iduser", isEqualTo: id).getDocuments{ snapshot, error in
-//            if let error = error {
-//                print("Error fetching book: \(error.localizedDescription)")
-//                return
-//            }
-//
-//            guard let documents = snapshot?.documents else { return }
-//
-//
-//            let user = documents.compactMap(documents ->users? in
-//                                            let data = document.data()
-//                                            let id =
-//                )
-//
-//    }
+    //    func fetchUser(id : Int){
+    //        let usercollection = Firestore.firestore().collection("user")
+    //        usercollection.whereField("iduser", isEqualTo: id).getDocuments{ snapshot, error in
+    //            if let error = error {
+    //                print("Error fetching book: \(error.localizedDescription)")
+    //                return
+    //            }
+    //
+    //            guard let documents = snapshot?.documents else { return }
+    //
+    //
+    //            let user = documents.compactMap(documents ->users? in
+    //                                            let data = document.data()
+    //                                            let id =
+    //                )
+    //
+    //    }
 
-    func dispatchoNotification(){
-        let calender = Calendar.current
-        let currentDate = Date()
-        let identifier = "Plane ticket"
-        let title = "Ban muon di chua"
-        let body = "Hay don hanh y di nao, co chuyen bay dang cho ban"
-        let hour = calender.component(.hour, from:currentDate )
-        let minutes = calender.component(.minute, from:currentDate)+1
-        let isDaily = true
-        
-        let notificationCenter = UNUserNotificationCenter.current()
-        
-        
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.body = body
-        content.sound = .default
-        
-       
-        var dateComponent = DateComponents(calendar: calender,timeZone: TimeZone.current)
-        dateComponent.hour = hour
-        dateComponent.minute = minutes
-        
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: isDaily)
-        
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-        
-        
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
-        notificationCenter.add(request)
-    }
+        func dispatchoNotification(){
+            let calender = Calendar.current
+            let currentDate = Date()
+            let identifier = "Plane ticket"
+            let title = "Ban muon di chua"
+            let body = "Hay don hanh y di nao, co chuyen bay dang cho ban"
+            let hour = calender.component(.hour, from:currentDate )
+            let minutes = calender.component(.minute, from:currentDate)+1
+            let isDaily = true
+            
+            let notificationCenter = UNUserNotificationCenter.current()
+            
+            
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = body
+            content.sound = .default
+            var dateComponent = DateComponents(calendar: calender,timeZone: TimeZone.current)
+                    dateComponent.hour = hour
+                    dateComponent.minute = minutes
+                    
+                    
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: isDaily)
+                    
+                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                    
+                    
+                    notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+                    notificationCenter.add(request)
+                }
 
-}
+            }
 
 
 
-struct Payment_Previews: PreviewProvider {
-    static var previews: some View {
-        Payment()
-    }
-}
+            struct Payment_Previews: PreviewProvider {
+                static var previews: some View {
+                    Payment()
+                }
+            }
