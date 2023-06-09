@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>645251670423-bv3qbioa9k2kc0jhpi1h5enpi55clo5r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.645251670423-bv3qbioa9k2kc0jhpi1h5enpi55clo5r</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB2MUj3491Z1TXX5cQBRLuRBjKG0krKvJY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>645251670423</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>co.angelayu.planeticket2</string>
+	<key>PROJECT_ID</key>
+	<string>planeticket2-eedb2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>planeticket2-eedb2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:645251670423:ios:3612dee4400bd1863964d2</string>
+	<key>DATABASE_URL</key>
+	<string>https://planeticket2-eedb2-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

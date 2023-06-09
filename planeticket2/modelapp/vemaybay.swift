@@ -6,26 +6,32 @@
 //
 
 import Foundation
-struct vemaybay{
-    let id : String
+import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+
+
+struct vemaybay: Codable {
+    @DocumentID var id: String?
+    
     let giave: Float
     let iddiadiemdi: Int
     let iddiadiemden: Int
-    let idUser:Int
-    let idvemaybay:Int
-    let ngaydi: Calendar
-    let ngayin : Calendar
-    let thoigianden: Calendar
-    init(id: String = "", giave: Float = 0, iddiadiemdi: Int = 0, iddiadiemden: Int = 0, idUser: Int = 0, idvemaybay: Int = 0, ngaydi: Calendar = Calendar.current, ngayin: Calendar = Calendar.current, thoigianden: Calendar = Calendar.current) {
+    let idUser: Int
+    let idvemaybay: Int
+    let email: String
+    var thoigiandi: Date?
+    var thoigianden: Date?
+    
+    init(id: String = "", giave: Float = 0, iddiadiemdi: Int = 0, iddiadiemden: Int = 0, idUser: Int = 0, idvemaybay: Int = 0,email: String = "", thoigiandi: Date = Date(), thoigianden: Date = Date()) {
         self.id = id
         self.giave = giave
         self.iddiadiemdi = iddiadiemdi
         self.iddiadiemden = iddiadiemden
         self.idUser = idUser
         self.idvemaybay = idvemaybay
-        self.ngaydi = ngaydi
-        self.ngayin = ngayin
+        self.email = email
+        self.thoigiandi = thoigiandi
         self.thoigianden = thoigianden
     }
-    
 }

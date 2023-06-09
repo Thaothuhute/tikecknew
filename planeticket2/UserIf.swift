@@ -14,7 +14,7 @@ struct UserIf: View {
     @State private var user: User?
     @State private var signout = false
     @EnvironmentObject var authViewModel: AuthViewModel
-       
+    @State private var showdoithongtin1 = false
        var body: some View {
            VStack {
                if let user = user {
@@ -25,7 +25,15 @@ struct UserIf: View {
                
                VStack {
                    Button(action: {
-                       // Show user information
+                       showdoithongtin1 = true
+                       let window = UIApplication
+                           .shared
+                           .connectedScenes
+                           .flatMap{($0 as? UIWindowScene)?.windows ?? [] }
+                           .first { $0.isKeyWindow}
+                       
+                       window?.rootViewController = UIHostingController(rootView: UserInformation())
+                       window?.makeKeyAndVisible()
                    }) {
                        Text("Thông tin người dùng")
                            .foregroundColor(.green)
@@ -83,12 +91,9 @@ struct UserIf: View {
                        
                        // Assuming email is unique, retrieve the first document
                        let user = documents[0].data()
-                       
+                       let decoder = Firestore.Decoder()
                        do {
-                           // Convert the Firestore data to your User model
-                           let jsonData = try JSONSerialization.data(withJSONObject: user, options: [])
-                           let decoder = JSONDecoder()
-                           self.user = try decoder.decode(User.self, from: jsonData)
+                           self.user = try decoder.decode(User.self, from: user)
                        } catch {
                            print("Error decoding user data: \(error)")
                        }

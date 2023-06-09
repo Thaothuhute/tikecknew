@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 let db = Firestore.firestore()
 
@@ -15,34 +16,23 @@ struct addData: View {
     var body: some View {
         
         Button(action: {
-            addSeatData()}) {
+            saveVemaybayToFirestore1()}) {
                 Text("Add")        }
         
         
     }
-    func addSeatData() {
-        for row in ["A", "B", "C", "D", "E", "F"] {
-            for number in 10...30 {
-                let seatNumber = "\(row)\(number)"
-                let isBooked = true
-                let idchuyenbay = 1// Có thể thay đổi giá trị tùy theo yêu cầu
-                
-                let data: [String: Any] = [
-                    "seatNumber": seatNumber,
-                    "isBooked": isBooked,
-                    "idchuyenbay": idchuyenbay
-                ]
-                
-                db.collection("seats").document(seatNumber).setData(data) { error in
-                    if let error = error {
-                        print("Error adding seat data: \(error)")
-                    } else {
-                        print("Seat data added successfully")
-                    }
-                }
-            }
-            
-        }}
+    func saveVemaybayToFirestore1() {
+        let db = Firestore.firestore()
+        
+        let vemaybay = vemaybay(giave: 3, iddiadiemdi: 3)
+        
+        do {
+            _ = try db.collection("vemaybay").addDocument(from: vemaybay)
+            print("Saved vemaybay to Firestore")
+        } catch let error {
+            print("Error saving vemaybay to Firestore: \(error.localizedDescription)")
+        }
+    }
 }
 
 struct addData_Previews: PreviewProvider {

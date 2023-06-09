@@ -181,7 +181,7 @@ struct viewFindPlane: View {
             
             
                 List(flights) { flight in
-                    NavigationLink(destination: Booking()
+                    NavigationLink(destination: fillInformation()
                         .environmentObject(bookingEnvironment)) {
                         VStack(alignment: .leading) {
                             if let departure = diadiem.first(where: { $0.iddiadiem == flight.iddiadiemdi }),
@@ -214,10 +214,37 @@ struct viewFindPlane: View {
                    return flight.iddiadiemdi == departure.iddiadiem && flight.iddiadiemden == destination.iddiadiem
                }
                flights = filteredFlights
+               for flight in filteredFlights {
+                               saveVemaybayToFirestore(flight: flight)
+                           }
                print("Địa điểm đi đã chọn: \(departure.tendiadiem)")
                   print("Địa điểm đến đã chọn: \(destination.tendiadiem)")
            }
     }
+    func saveVemaybayToFirestore(flight: Flight) {
+            let db = Firestore.firestore()
+            
+            var vemaybayData = flight
+            // Gán thoigiandi
+            
+            let docData: [String: Any] = [
+                "idchuyenbay": vemaybayData.idchuyenbay,
+                "iddiadiemden": vemaybayData.iddiadiemden,
+                "iddiadiemdi": vemaybayData.iddiadiemdi,
+                "idmaybay": vemaybayData.idmaybay,
+                "thoigianden": vemaybayData.thoigianden,
+                "thoigiandi": vemaybayData.thoigiandi,
+                // Các trường dữ liệu khác của vemaybayData
+            ]
+            
+            db.collection("vemaybay").document().setData(docData) { error in
+                if let error = error {
+                    print("Lỗi khi lưu dữ liệu: \(error.localizedDescription)")
+                } else {
+                    print("Dữ liệu đã được lưu thành công!")
+                }
+            }
+        }
     
     }
 

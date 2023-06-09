@@ -26,9 +26,9 @@
 		16697B962A1611B400E7240C /* UserIf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16697B952A1611B400E7240C /* UserIf.swift */; };
 		16697B982A161F4B00E7240C /* Booking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16697B972A161F4B00E7240C /* Booking.swift */; };
 		16697B9A2A167DDD00E7240C /* addData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16697B992A167DDD00E7240C /* addData.swift */; };
+		16EC91DD2A34AA2400366201 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16EC91DC2A34AA2400366201 /* GoogleService-Info.plist */; };
 		D93E46AF2A1B7BD100198206 /* Diadiem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93E46AE2A1B7BD100198206 /* Diadiem.swift */; };
 		D95E4E732A1FC4EC00F4AD9B /* maybay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95E4E722A1FC4EC00F4AD9B /* maybay.swift */; };
-		D95E4E752A1FC86000F4AD9B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D95E4E742A1FC86000F4AD9B /* GoogleService-Info.plist */; };
 		D95E4E772A1FC8AB00F4AD9B /* chuyenbay.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95E4E762A1FC8AB00F4AD9B /* chuyenbay.swift */; };
 		D95E4E792A1FCD6400F4AD9B /* users.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95E4E782A1FCD6400F4AD9B /* users.swift */; };
 		D95E4E7B2A1FCDC900F4AD9B /* loaive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95E4E7A2A1FCDC900F4AD9B /* loaive.swift */; };
@@ -64,9 +64,9 @@
 		16697B952A1611B400E7240C /* UserIf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIf.swift; sourceTree = "<group>"; };
 		16697B972A161F4B00E7240C /* Booking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Booking.swift; sourceTree = "<group>"; };
 		16697B992A167DDD00E7240C /* addData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addData.swift; sourceTree = "<group>"; };
+		16EC91DC2A34AA2400366201 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D93E46AE2A1B7BD100198206 /* Diadiem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diadiem.swift; sourceTree = "<group>"; };
 		D95E4E722A1FC4EC00F4AD9B /* maybay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = maybay.swift; sourceTree = "<group>"; };
-		D95E4E742A1FC86000F4AD9B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D95E4E762A1FC8AB00F4AD9B /* chuyenbay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chuyenbay.swift; sourceTree = "<group>"; };
 		D95E4E782A1FCD6400F4AD9B /* users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = users.swift; sourceTree = "<group>"; };
 		D95E4E7A2A1FCDC900F4AD9B /* loaive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loaive.swift; sourceTree = "<group>"; };
@@ -112,7 +112,6 @@
 		1613371B2A0AA66600B054AA /* planeticket2 */ = {
 			isa = PBXGroup;
 			children = (
-				D95E4E742A1FC86000F4AD9B /* GoogleService-Info.plist */,
 				161337652A0F4D1200B054AA /* detailtciket.swift */,
 				161337672A0F50B400B054AA /* modelapp */,
 				161337632A0DEDEB00B054AA /* ticketplaneapp.swift */,
@@ -131,6 +130,7 @@
 				16697B952A1611B400E7240C /* UserIf.swift */,
 				16697B972A161F4B00E7240C /* Booking.swift */,
 				16697B992A167DDD00E7240C /* addData.swift */,
+				16EC91DC2A34AA2400366201 /* GoogleService-Info.plist */,
 				161337202A0AA66700B054AA /* Assets.xcassets */,
 				161337222A0AA66700B054AA /* Preview Content */,
 			);
@@ -245,8 +245,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				161337242A0AA66700B054AA /* Preview Assets.xcassets in Resources */,
-				D95E4E752A1FC86000F4AD9B /* GoogleService-Info.plist in Resources */,
 				161337212A0AA66700B054AA /* Assets.xcassets in Resources */,
+				16EC91DD2A34AA2400366201 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

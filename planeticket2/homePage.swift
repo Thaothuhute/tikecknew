@@ -22,11 +22,12 @@ struct homePage: View {
         Boximage(id:3,title:"Sài Gòn",imageText: "3")
     ]
     var body: some View {
-        NavigationView {
+     
             
             
             
-            VStack {
+        TabView {
+            VStack{
                 Spacer().frame(height: 150)
                 VStack{
                     HStack{
@@ -38,7 +39,7 @@ struct homePage: View {
                                 .foregroundColor(Color.gray)
                             Text("Vung tau")
                                 .multilineTextAlignment(.leading)
-                               
+                            
                                 .font(.title)
                             Spacer().frame(height: 20)
                         }
@@ -65,7 +66,7 @@ struct homePage: View {
                     }
                 }
                 .frame(width: 2000)
-               
+                
                 Text("Tìm kiếm vé máy bay tốt nhất")
                     .font(.title)
                     .padding(20)
@@ -92,49 +93,49 @@ struct homePage: View {
                 Button(action: {
                     showdoithongtin = true
                     let window = UIApplication
-                                            .shared
-                                            .connectedScenes
-                                            .flatMap{($0 as? UIWindowScene)?.windows ?? [] }
-                                            .first { $0.isKeyWindow}
-                                        
-                                        window?.rootViewController = UIHostingController(rootView: UserInformation())
-                                        window?.makeKeyAndVisible()
-                                    }
-                                    ) {
-                                        Text("Doi mat khau")
-                                            .foregroundColor(.white)
-                                            .padding()
-                                            .background(Color.green)
-                                            .cornerRadius(10)
-                                    }
-                                    
-                                  
-                                }
-                                .background(
-                                    Image("background")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill )
-                                )
-                                
-                               
-                                .tabItem {
-                                    Image(systemName: "house")
-                                    Text("Trang chủ")
-                                }
-                                
-                                Contact()
-                                    .tabItem {
-                                        Image(systemName: "phone")
-                                        Text("Liên hệ")
-                                    }
-                              
-                                UserIf()
-                                                .tabItem {
-                                        Image(systemName: "person")
-                                        Text("Tài khoản")
-                                    }
-                               
-                            }
+                        .shared
+                        .connectedScenes
+                        .flatMap{($0 as? UIWindowScene)?.windows ?? [] }
+                        .first { $0.isKeyWindow}
+                    
+                    window?.rootViewController = UIHostingController(rootView: UserInformation())
+                    window?.makeKeyAndVisible()
+                }
+                ) {
+                    Text("Doi mat khau")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.green)
+                        .cornerRadius(10)
+                }
+                
+                
+            }
+            .background(
+                Image("background")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill )
+            )
+            
+            
+            .tabItem {
+                Image(systemName: "house")
+                Text("Trang chủ")
+            }
+            
+            Contact()
+                .tabItem {
+                    Image(systemName: "phone")
+                    Text("Liên hệ")
+                }
+            
+            UserIf()
+                .tabItem {
+                    Image(systemName: "person")
+                    Text("Tài khoản")
+                }
+        }
+                            
                             
                         }
                     }
