@@ -12,7 +12,7 @@ import FirebaseAuth
 
 
 struct UserPage: View {
-    @State private var user: User?
+    @State private var user: MyUser?
     @State private var currentUser: User?
     
     var body: some View {
@@ -44,12 +44,9 @@ struct UserPage: View {
                     
                     // Assuming email is unique, retrieve the first document
                     let user = documents[0].data()
-                    
+                    let decoder = Firestore.Decoder()
                     do {
-                        // Convert the Firestore data to your User model
-                        let jsonData = try JSONSerialization.data(withJSONObject: user, options: [])
-                        let decoder = JSONDecoder()
-                        self.user = try decoder.decode(User.self, from: jsonData)
+                        self.user = try decoder.decode(MyUser.self, from: user)
                     } catch {
                         print("Error decoding user data: \(error)")
                     }

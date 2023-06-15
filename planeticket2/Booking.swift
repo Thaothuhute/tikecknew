@@ -9,6 +9,7 @@
     import SwiftUI
     import FirebaseFirestore
     import FirebaseFirestoreSwift
+    import FirebaseAuth
 
     class SeatSelection: ObservableObject {
     @Published var selectedSeat: String?
@@ -37,6 +38,7 @@
     @Published var ticketBookingStatus: String = ""
     @Published var selectedFlightPrice: FlightPrice? = nil
     @Published var lastUsedID: Int = 0
+        
     var diadiem: [DiaDiem] = []
     private var db = Firestore.firestore()
     private var seatsCollection: CollectionReference {
@@ -60,8 +62,9 @@
             do {
                        let db = Firestore.firestore()
                        var vemaybayData = vemaybayData
-                        
+                    
                        vemaybayData.id = UUID().uuidString
+                        vemaybayData.email = Auth.auth().currentUser?.email ?? ""
                         vemaybayData.thoigiandi = thoigiandi
                        vemaybayData.thoigianden = thoigianden
                        let documentRef = db.collection("vemaybay").document(vemaybayData.id!)
@@ -223,6 +226,9 @@
         @ObservedObject private var seatManager = SeatManager()
         @State private var vemaybayData = vemaybay()
         @State private var showPaymentView = false
+        @State private var currentUser: User?
+        @State private var uservmb :MyUser?
+        @StateObject var authViewModel = AuthViewModel()
         
         var selectedDiaDiem1: DiaDiem? {
             get { bookingEnvironment.selectedDiaDiem1 }
@@ -289,8 +295,10 @@
                             iddiadiemden: selectedDiaDiem2.iddiadiem,
                             idUser: 1,
                             idvemaybay: 1,
+                            email: vemaybayData.email,
                             thoigiandi: vemaybayData.thoigiandi!,
                             thoigianden: vemaybayData.thoigianden!
+                            
                         )
                         
                         print("Selected Flight Price: \(selectedFlightPrice)")
@@ -313,7 +321,7 @@
                         .cornerRadius(10)
                 }
                 .sheet(isPresented: $showPaymentView) {
-                    Payment(selectedVemaybay: $selectedVemaybay)
+                    //PaymentView()
                         }
                 
             }

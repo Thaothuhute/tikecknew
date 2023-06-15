@@ -22,10 +22,6 @@ struct homePage: View {
         Boximage(id:3,title:"Sài Gòn",imageText: "3")
     ]
     var body: some View {
-     
-            
-            
-            
         TabView {
             VStack{
                 Spacer().frame(height: 150)
@@ -90,24 +86,24 @@ struct homePage: View {
                     .font(.title)
                     .padding(.horizontal)
                 
-                Button(action: {
-                    showdoithongtin = true
-                    let window = UIApplication
-                        .shared
-                        .connectedScenes
-                        .flatMap{($0 as? UIWindowScene)?.windows ?? [] }
-                        .first { $0.isKeyWindow}
-                    
-                    window?.rootViewController = UIHostingController(rootView: UserInformation())
-                    window?.makeKeyAndVisible()
-                }
-                ) {
-                    Text("Doi mat khau")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.green)
-                        .cornerRadius(10)
-                }
+//                Button(action: {
+//                    showdoithongtin = true
+//                    let window = UIApplication
+//                        .shared
+//                        .connectedScenes
+//                        .flatMap{($0 as? UIWindowScene)?.windows ?? [] }
+//                        .first { $0.isKeyWindow}
+//
+//                    window?.rootViewController = UIHostingController(rootView: UserInformation())
+//                    window?.makeKeyAndVisible()
+//                }
+//                ) {
+//                    Text("Doi mat khau")
+//                        .foregroundColor(.white)
+//                        .padding()
+//                        .background(Color.green)
+//                        .cornerRadius(10)
+//                }
                 
                 
             }

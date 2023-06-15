@@ -11,9 +11,9 @@ struct UserInformation: View {
     @StateObject var authViewModel = AuthViewModel()
     @State private var currentUser: User?
     @State private var showdoithongtin = false
-    @State private var usercr :users?
+    @State private var usercr :MyUser?
+    @State private var showdoimatkhau = false
 
-    
     var body: some View{
         VStack{
             HStack{
@@ -26,28 +26,21 @@ struct UserInformation: View {
                 VStack{
                     
                     Button(action: {
-                        showdoithongtin = true
-                        let window = UIApplication
-                            .shared
-                            .connectedScenes
-                            .flatMap{($0 as? UIWindowScene)?.windows ?? [] }
-                            .first { $0.isKeyWindow}
-                        
-                        window?.rootViewController = UIHostingController(rootView: fillInformation())
-                        window?.makeKeyAndVisible()
-                    }
-                    ) {
-                        Text("Doi mat khau")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.green)
-                            .cornerRadius(10)
-                    }
+                               showdoimatkhau = true
+                                            }) {
+                                                Text("Doi mat khau")
+                                                    .foregroundColor(.white)
+                                                    .padding()
+                                                    .background(Color.green)
+                                                    .cornerRadius(10)
+                                            }
+
                     
                     Spacer().frame(height:10)
                     Button("Doi thong tin") {
-
-                    }.buttonStyle(.bordered)
+                        showdoithongtin = true
+                                    }
+                    .buttonStyle(.bordered)
                     Spacer().frame(height:10)
                 }
                 Spacer()
@@ -74,10 +67,11 @@ struct UserInformation: View {
                 Text("SDT:")
                 Spacer().frame(width: 5)
 
-                Text("09020203030")
+                Text("Số điện thoại")
+                Text("\(usercr?.sodienthoai ?? "")")
                 Spacer()
                 Text("Ngay sinh:")
-                Text("\(usercr?.ngaysinh ?? Calendar.current)")
+                Text("\(formatDate(usercr?.ngaysinh))")
             }
             .padding(5)
             .padding()
@@ -93,35 +87,54 @@ struct UserInformation: View {
             getcurretnUser()
             getUser()
         }
+        .sheet(isPresented: $showdoithongtin) {
+                        UpdateIf()
+                    }
+                    .sheet(isPresented: $showdoimatkhau) {
+                        UserPage()
+                    }
     }
-    func getUser(){
-        let listdiadiem = Firestore.firestore().collection("user")
-        listdiadiem.whereField("email", isEqualTo: Auth.auth().currentUser?.email ).getDocuments{ snapshot, error in
-            if let error = error {
-                print("Error fetching book: \(error.localizedDescription)")
-                return
-            }
-            guard let documents = snapshot?.documents else { return }
-            let usercurrent = documents.compactMap{document -> users? in
-                let data = document.data()
-                let  email = data["email"] as? String ?? ""
-                let password = data["password"] as? String ?? ""
-                let  Hotendem = data["hovatendem"] as? String ?? ""
-                let  ten = data["ten"] as? String ?? ""
-                let  danhxung = data["hovatendem"] as? String ?? "Chua co"
-                let  tuoi = data["hovatendem"] as? Int
-                let ngaysinhraw = data["ngaysinh"] as? Timestamp
-                let sdt = data["sdt"] as? String ?? ""
-                let quoctich = data["quoctich"] as? String ?? ""
-
-
-                let ngaysinh = convertTimestampToCalendar(ngaysinhraw ?? Timestamp(date: Date()))
-                return users(email: email, password: password, Hotendem: Hotendem, ten: ten, quoctinh: quoctich, danhxung: danhxung, tuoi: tuoi ?? 0, ngaysinh: ngaysinh, sdt: sdt  )
-                
-            }
-            self.usercr  = usercurrent.first
+    func formatDate(_ date: Date?) -> String {
+        guard let date = date else {
+            return ""
         }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy" // Định dạng ngày tháng, ví dụ: "dd/MM/yyyy"
+        
+        return formatter.string(from: date)
     }
+
+
+
+
+
+        func getUser(){
+            let listdiadiem = Firestore.firestore().collection("user")
+            listdiadiem.whereField("email", isEqualTo: Auth.auth().currentUser?.email ).getDocuments{ snapshot, error in
+                if let error = error {
+                    print("Error fetching book: \(error.localizedDescription)")
+                    return
+                }
+                guard let documents = snapshot?.documents else { return }
+                    let usercurrent = documents.compactMap { document -> MyUser? in
+                            let data = document.data()
+                            let email = data["email"] as? String ?? ""
+                            let password = data["password"] as? String ?? ""
+                            let createdAtTimestamp = data["createdAt"] as? Timestamp
+                            let sodienthoai = data["sodienthoai"] as? String ?? ""
+                            let ngaysinhTimestamp = data["ngaysinh"] as? Timestamp
+                            let ten = data["ten"] as? String ?? ""
+                            
+                            let createdAt = createdAtTimestamp?.dateValue() ?? Date()
+                            let ngaysinh = ngaysinhTimestamp?.dateValue() ?? Date()
+                            
+                        return MyUser(email: email, password: password, createdAt: createdAt, sodienthoai: sodienthoai, ngaysinh: ngaysinh, ten: ten)
+                }
+
+                self.usercr = usercurrent.first
+            }
+        }
     func getcurretnUser(){
         
         

@@ -11,10 +11,11 @@ import Firebase
 import FirebaseAuth
 
 struct UserIf: View {
-    @State private var user: User?
+    @State private var user: MyUser?
     @State private var signout = false
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showdoithongtin1 = false
+    @State private var showvemaybay = false
        var body: some View {
            VStack {
                if let user = user {
@@ -26,14 +27,7 @@ struct UserIf: View {
                VStack {
                    Button(action: {
                        showdoithongtin1 = true
-                       let window = UIApplication
-                           .shared
-                           .connectedScenes
-                           .flatMap{($0 as? UIWindowScene)?.windows ?? [] }
-                           .first { $0.isKeyWindow}
-                       
-                       window?.rootViewController = UIHostingController(rootView: UserInformation())
-                       window?.makeKeyAndVisible()
+                      
                    }) {
                        Text("Thông tin người dùng")
                            .foregroundColor(.green)
@@ -42,7 +36,7 @@ struct UserIf: View {
                    .cornerRadius(10)
                    
                    Button(action: {
-                      
+                      UpdateIf()
                    }) {
                        Text("Đổi mật khẩu")
                            .foregroundColor(.green)
@@ -51,7 +45,7 @@ struct UserIf: View {
                    .cornerRadius(10)
                    
                    Button(action: {
-                       // Show purchased tickets view
+                       showvemaybay = true
                    }) {
                        Text("Vé đã mua")
                            .foregroundColor(.green)
@@ -72,6 +66,12 @@ struct UserIf: View {
                .cornerRadius(10)
                
            }
+           .sheet(isPresented: $showdoithongtin1) {
+                           UserInformation()
+                       }
+           .sheet(isPresented: $showvemaybay) {
+                           ShowTicket()
+                       }
            .padding()
            .onAppear {
                if let userEmail = Auth.auth().currentUser?.email {
@@ -93,7 +93,7 @@ struct UserIf: View {
                        let user = documents[0].data()
                        let decoder = Firestore.Decoder()
                        do {
-                           self.user = try decoder.decode(User.self, from: user)
+                           self.user = try decoder.decode(MyUser.self, from: user)
                        } catch {
                            print("Error decoding user data: \(error)")
                        }
@@ -101,11 +101,12 @@ struct UserIf: View {
                }
            }
        }
+       
 }
 
 struct UserIf_Previews: PreviewProvider {
     static var previews: some View {
-        UserIf()
+        UserIf().environmentObject(AuthViewModel())
     }
 }
 

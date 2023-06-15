@@ -10,21 +10,11 @@ import FirebaseFirestoreSwift
 import FirebaseFirestore
 import FirebaseAuth
 
-struct User: Identifiable, Decodable, Hashable{
-    let id = UUID()
-    let email: String
-    let password: String
-    let createdAt: Date // Thêm trường createdAt kiểu Date
-       
-       private enum CodingKeys: String, CodingKey {
-           case email, password, createdAt
-       }
-}
 
 struct ContactInfoView: View {
     
     
-    @State private var user: User?
+    @State private var user: MyUser?
     @EnvironmentObject var bookingEnvironment: BookingEnvironment
     
     @State private var email = ""
@@ -73,7 +63,7 @@ struct ContactInfoView: View {
                     let decoder = Firestore.Decoder()
                     
                     do {
-                        self.user = try decoder.decode(User.self, from: user)
+                        self.user = try decoder.decode(MyUser.self, from: user)
                     } catch {
                         print("Error decoding user data: \(error)")
                     }
