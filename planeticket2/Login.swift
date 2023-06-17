@@ -29,18 +29,25 @@ class AuthViewModel: ObservableObject {
     
     
     func login(email: String, password: String) {
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-            if let error = error {
-                self?.errorMessage = error.localizedDescription
-                
-            } else {
-                
-                self?.isLoggedIn = true
-                self?.loggedInUser = User(email: email, password: password)
-                
-            }
+        if email == "Admin@gmail.com" && password == "Admin123" {
+            // Admin login
+            self.isLoggedIn = true
+            self.loggedInUser = User(email: email, password: password)
+        } else {
+            
+            Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+                if let error = error {
+                    self?.errorMessage = error.localizedDescription
+                    
+                } else {
+                    
+                    self?.isLoggedIn = true
+                    self?.loggedInUser = User(email: email, password: password)
+                    
+                }
         }
-    }
+            
+        }}
     
     func signUp() {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
@@ -96,9 +103,11 @@ struct Login: View {
     var body: some View {
         VStack {
             if authViewModel.isLoggedIn {
-                homePage()
-                
-                
+                           if authViewModel.loggedInUser?.email == "Admin@gmail.com" && authViewModel.loggedInUser?.password == "Admin123" {
+                               AdminView()
+                           } else {
+                               homePage()
+                           }
                 
             } else {
                 VStack {

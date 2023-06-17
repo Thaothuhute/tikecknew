@@ -321,7 +321,7 @@
                         .cornerRadius(10)
                 }
                 .sheet(isPresented: $showPaymentView) {
-                    //PaymentView()
+                    PaymentView()
                         }
                 
             }

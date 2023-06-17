@@ -6,19 +6,19 @@
 //
 
 import Foundation
-struct chuyenbay{
+struct chuyenbay: Codable{
    
     var idchuyenbay:Int
-    var idiadiemdi:Int
-    var idiadiemden:Int
+    var iddiadiemdi:Int
+    var iddiadiemden:Int
     var idmaybay:Int
-    var thoigianden: Calendar
-    var thoigiandi:Calendar
+    var thoigianden: Date
+    var thoigiandi: Date
     
-    init(idchuyenbay: Int, idiadiemdi: Int, idiadiemden: Int, idmaybay: Int, thoigianden: Calendar, thoigiandi: Calendar) {
+    init(idchuyenbay: Int, iddiadiemdi: Int, iddiadiemden: Int, idmaybay: Int, thoigianden: Date, thoigiandi: Date) {
         self.idchuyenbay = idchuyenbay
-        self.idiadiemdi = idiadiemdi
-        self.idiadiemden = idiadiemden
+        self.iddiadiemdi = iddiadiemdi
+        self.iddiadiemden = iddiadiemden
         self.idmaybay = idmaybay
         self.thoigianden = thoigianden
         self.thoigiandi = thoigiandi

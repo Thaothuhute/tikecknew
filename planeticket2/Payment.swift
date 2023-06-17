@@ -1,54 +1,80 @@
-//import SwiftUI
-//import ZaloPaySDK
-//let appID = "2554"
-//let appKey = "sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn"
-//
-//func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//    ZaloPaySDK.sharedInstance()?.initWithAppId(appID, appKey: appKey)
-//    return true
-//}
-//
-//struct PaymentView: View {
-//    var body: some View {
-//        NavigationView {
-//            VStack {
-//                QRCodeImageView()
-//                Spacer()
-//
-//                Button(action: {
-//                    // Gọi hàm để thực hiện thanh toán bằng ZaloPay
-//                    makePaymentWithZaloPay()
-//                }) {
-//                    Text("Thanh toán")
-//                        .padding()
-//                        .background(Color.blue)
-//                        .foregroundColor(.white)
-//                        .cornerRadius(10)
-//                }
-//            }
-//            .padding()
-//            .navigationTitle("Thanh toán")
-//            .edgesIgnoringSafeArea(.all)
-//        }
-//    }
-//
-//    func makePaymentWithZaloPay() {
-//        // Thực hiện thanh toán bằng ZaloPay
-//        // Gọi các hàm và xử lý logic liên quan đến thanh toán
-//    }
-//}
-//
-//struct QRCodeImageView: View {
-//    var body: some View {
-//        Image("4")
-//            .resizable()
-//            .aspectRatio(contentMode: .fit)
-//            .padding()
-//    }
-//}
-//
-//struct Payment_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PaymentView()
-//    }
-//}
+import SwiftUI
+import UserNotifications
+
+struct PaymentView: View {
+    var body: some View {
+        NavigationView {
+            VStack {
+                QRCodeImageView()
+                Spacer()
+
+                Button(action: {
+                    kiemtraThanhtoan()
+                }) {
+                    Text("Thanh toán")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+            }
+            .padding()
+            .navigationTitle("Thanh toán")
+            .edgesIgnoringSafeArea(.all)
+        }
+    }
+
+    func kiemtraThanhtoan() {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .authorized:
+                dispatchNotification()
+            case .denied:
+                return
+            case .notDetermined:
+                center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                    if granted {
+                        dispatchNotification()
+                    }
+                }
+            default:
+                return
+            }
+        }
+    }
+
+    func dispatchNotification() {
+        let center = UNUserNotificationCenter.current()
+        let content = UNMutableNotificationContent()
+        content.title = "Thông báo"
+        content.body = "Bạn đã đặt vé máy bay thành công!"
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        center.add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error.localizedDescription)")
+            } else {
+                print("Notification scheduled successfully")
+            }
+        }
+    }
+}
+
+struct QRCodeImageView: View {
+    var body: some View {
+        Image("4")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding()
+    }
+}
+
+struct PaymentView_Previews: PreviewProvider {
+    static var previews: some View {
+        PaymentView()
+    }
+}

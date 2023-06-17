@@ -20,7 +20,7 @@ struct ticketplaneapp:App{
     var body: some Scene{
         
         WindowGroup{
-            ShowTicket()
+            Login()
         }
     }
 }
